@@ -56,13 +56,11 @@ class ChatStorage {
         }
     }
     
-    func saveConversation(messages: [Message], model: String = "openai/gpt-3.5-turbo"){
+    func saveConversation(messages: [Message]){
         
         let filename = messages.first?.id.uuidString  ?? "No_ID"
         
-        let messageDict = messages.map { ["role": $0.role, "content": $0.content] }
-        let data = OpenRouterRequest(model: model, messages: messageDict)
-        try? save(data, to: filename)
+        try? save(messages, to: filename)
         
     }
     
@@ -79,12 +77,8 @@ class ChatStorage {
     }
     
     func loadConversation(filename: String) -> [Message] {
-        let data = try? load(OpenRouterRequest.self, from: filename)
-        if let messages = data?.messages {
-            let converted = messages.map(makeMessage)
-            return converted.compactMap{$0}
-        }
-        return []
+        let data = try? load([Message].self, from: filename)
+        return data ?? []
     }
     
     func loadConversation() -> [Message]{
@@ -106,19 +100,4 @@ class ChatStorage {
         }
     }
     
-    private func makeMessage( _ data: Dictionary<String,String>) -> Message?{
-        var role = ""
-        var content = ""
-        for line in data {
-            if line.key == "role" {
-                role = line.value
-            }else{
-                content = line.value
-            }
-        }
-        if role != "" && content != ""{
-            return Message(role: role, content: content)
-        }
-        return nil
-    }
 }
