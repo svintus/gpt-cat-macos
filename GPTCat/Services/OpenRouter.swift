@@ -7,7 +7,7 @@
 import Foundation
 
 
-class OpenRouterService {
+class OpenRouter {
     private let apiKey: String
     private let baseURL = "https://openrouter.ai/api/v1/chat/completions"
     
@@ -15,7 +15,7 @@ class OpenRouterService {
         self.apiKey = apiKey
     }
     
-    func sendMessage(messages: [Message], model: String = "openai/gpt-3.5-turbo") async throws -> String {
+    func sendMessage(messages: [Message], model: String) async throws -> String {
         guard let url = URL(string: baseURL) else {
             throw URLError(.badURL)
         }
@@ -25,7 +25,7 @@ class OpenRouterService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         
-        let filteredMessages = messages.filter(CheckNotErrorMessage)
+        let filteredMessages = messages.filter(checkNotErrorMessage)
         
         let messageDict = filteredMessages.map { ["role": $0.role, "content": $0.content] }
         let body = OpenRouterRequest(model: model, messages: messageDict)
@@ -44,7 +44,8 @@ class OpenRouterService {
         return  "Error: " + (error?.error.message ?? "No Responce")
     }
     
-    func CheckNotErrorMessage(_ message: Message) -> Bool {
+    // TODO: fix, not a reliable check :)
+    func checkNotErrorMessage(_ message: Message) -> Bool {
         return message.role != "assistant" || !message.content.hasPrefix("Error: ")
     }
 }
