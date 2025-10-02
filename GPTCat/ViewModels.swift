@@ -29,11 +29,11 @@ class ChatViewModel: ObservableObject {
     func setApiKey(_ key: String) {
         apiKey = key
         service = OpenRouterService(apiKey: key)
-        UserDefaults.standard.set(key, forKey: "openrouter_api_key")
+        Keychain.save(key: "openrouter_api_key", value: key)
     }
     
     func loadApiKey() {
-        if let saved = UserDefaults.standard.string(forKey: "openrouter_api_key") {
+        if let saved = Keychain.read(key: "openrouter_api_key") {
             apiKey = saved
             service = OpenRouterService(apiKey: saved)
         }
