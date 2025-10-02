@@ -14,173 +14,181 @@ struct ContentView: View {
     @State private var showingSettings = false
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 0) {
-                // Chat messages
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            ForEach(viewModel.messages) { message in
-                                MessageBubble(message: message)
-                                    .id(message.id)
-                            }
-                            
-                            if viewModel.isLoading {
-                                HStack {
-                                    ProgressView()
-                                        .scaleEffect(0.8)
-                                    Text("Thinking...")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 12)
-                            }
+        VStack(spacing: 0) {
+            // Chat messages
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(viewModel.messages) { message in
+                            MessageBubble(message: message).id(message.id)
                         }
-                        .padding()
-                    }
-                    .onChange(of: viewModel.messages.count) {
-                        if let lastMessage = viewModel.messages.last {
-                            withAnimation {
-                                proxy.scrollTo(lastMessage.id, anchor: .bottom)
+
+                        if viewModel.isLoading {
+                            HStack {
+                                ProgressView()
+                                    .scaleEffect(0.8)
+                                Text("Thinking...")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 12)
+                        }
+                    }
+                    .padding()
+                }
+                .onChange(of: viewModel.messages.count) {
+                    if let lastMessage = viewModel.messages.last {
+                        withAnimation {
+                            proxy.scrollTo(lastMessage.id, anchor: .bottom)
                         }
                     }
                 }
-                
-                Divider()
-                
-                // Input area
-                HStack(spacing: 12) {
-                    TextField("Type your message...", text: $viewModel.inputText)
-                        .textFieldStyle(.plain)
-                        .padding(10)
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
-                        .onSubmit {
-                            viewModel.sendMessage()
-                        }
-                    
-                    Button(action: { viewModel.sendMessage() }) {
-                        Image(systemName: "arrow.up.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(viewModel.inputText.isEmpty ? .gray : .blue)
+            }
+
+            Divider()
+
+            // Input area
+            HStack(spacing: 12) {
+                TextField("Type your message...", text: $viewModel.inputText)
+                    .textFieldStyle(.plain)
+                    .padding(10)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(8)
+                    .onSubmit {
+                        viewModel.sendMessage()
+                    }
+                .overlay(alignment: .trailing) {
+                    Button(action: {
+                            // TODO do an action here
+                            print("Mic button pressed")
+                            }) {
+                        Image(systemName: "microphone")
+                            .foregroundColor(.secondary)
                     }
                     .buttonStyle(.plain)
-                    .disabled(viewModel.inputText.isEmpty || viewModel.isLoading)
+                        .padding(.trailing, 8)
                 }
-                .padding()
+
+                Button(action: { viewModel.sendMessage() }) {
+                    Image(systemName: "arrow.up.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(viewModel.inputText.isEmpty ? .gray : .blue)
+                }
+                .buttonStyle(.plain)
+                    .disabled(viewModel.inputText.isEmpty || viewModel.isLoading)
             }
-            .navigationTitle("OpenRouter Chat")
+            .padding()
+        }
+        .navigationTitle("GPT Cat  🐈")
             .toolbar {
+                ToolbarItem(placement: .navigation) {
+                    Button(action: { showingSettings = true }) {
+                        Image(systemName: "gear")
+                    }
+                }
                 ToolbarItem(placement: .navigation) {
                     Button(action: { viewModel.clearChat() }) {
                         Image(systemName: "trash")
                     }
                 }
-                ToolbarItem {
-                    Button(action: { showingSettings = true }) {
-                        Image(systemName: "gear")
-                    }
-                }
             }
-        }
         .sheet(isPresented: $showingSettings) {
             SettingsView(viewModel: viewModel)
         }
         .frame(minWidth: 600, minHeight: 400)
-        .onAppear {
-            viewModel.loadApiKey()
-        }
+            .onAppear {
+                viewModel.loadApiKey()
+            }
     }
-}
-
-struct MessageBubble: View {
-    let message: Message
     
-    var body: some View {
-        HStack {
-            if message.role == "user" {
-                Spacer()
-            }
-            
-            VStack(alignment: message.role == "user" ? .trailing : .leading, spacing: 4) {
-                Text(message.role.capitalized)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                Text(message.content)
-                    .padding(12)
-                    .background(message.role == "user" ? Color.blue : Color.gray.opacity(0.2))
-                    .foregroundColor(message.role == "user" ? .white : .primary)
-                    .cornerRadius(12)
-            }
-            .frame(maxWidth: 500, alignment: message.role == "user" ? .trailing : .leading)
-            
-            if message.role == "assistant" {
-                Spacer()
-            }
-        }
-    }
-}
-
-struct SettingsView: View {
-    @ObservedObject var viewModel: ChatViewModel
-    @Environment(\.dismiss) var dismiss
-    @State private var tempApiKey = ""
-    
-    var body: some View {
-        VStack(spacing: 20) {
-            Text("Settings")
-                .font(.title)
-                .padding(.top)
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text("OpenRouter API Key")
-                    .font(.headline)
-                
-                SecureField("Enter your API key", text: $tempApiKey)
-                    .textFieldStyle(.roundedBorder)
-                    .onAppear {
-                        tempApiKey = viewModel.apiKey
-                    }
-                
-                Text("Get your API key from openrouter.ai")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.horizontal)
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Model")
-                    .font(.headline)
-                
-                Picker("Select Model", selection: $viewModel.selectedModel) {
-                    ForEach(viewModel.availableModels, id: \.self) { model in
-                        Text(model).tag(model)
-                    }
-                }
-                .pickerStyle(.menu)
-            }
-            .padding(.horizontal)
-            
-            Spacer()
-            
+    struct MessageBubble: View {
+        let message: Message
+        
+        var body: some View {
             HStack {
-                Button("Cancel") {
-                    dismiss()
+                if message.role == "user" {
+                    Spacer()
                 }
-                .keyboardShortcut(.cancelAction)
                 
-                Button("Save") {
-                    viewModel.setApiKey(tempApiKey.trimmingCharacters(in: .whitespacesAndNewlines))
-                    dismiss()
+                VStack(alignment: message.role == "user" ? .trailing : .leading, spacing: 4) {
+                    Text(message.role.capitalized)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    Text(message.content)
+                        .padding(12)
+                        .background(message.role == "user" ? Color.blue : Color.gray.opacity(0.2))
+                        .foregroundColor(message.role == "user" ? .white : .primary)
+                        .cornerRadius(12)
                 }
-                .keyboardShortcut(.defaultAction)
+                .frame(maxWidth: 500, alignment: message.role == "user" ? .trailing : .leading)
+                
+                if message.role == "assistant" {
+                    Spacer()
+                }
             }
-            .padding()
         }
-        .frame(width: 400, height: 300)
+    }
+    
+    struct SettingsView: View {
+        @ObservedObject var viewModel: ChatViewModel
+        @Environment(\.dismiss) var dismiss
+        @State private var tempApiKey = ""
+        
+        var body: some View {
+            VStack(spacing: 20) {
+                Text("Settings")
+                    .font(.title)
+                    .padding(.top)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("OpenRouter API Key")
+                        .font(.headline)
+                    
+                    SecureField("Enter your API key", text: $tempApiKey)
+                        .textFieldStyle(.roundedBorder)
+                        .onAppear {
+                            tempApiKey = viewModel.apiKey
+                        }
+                    
+                    Text("Get your API key from openrouter.ai")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                .padding(.horizontal)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Model")
+                        .font(.headline)
+                    
+                    Picker("Select Model", selection: $viewModel.selectedModel) {
+                        ForEach(viewModel.availableModels, id: \.self) { model in
+                            Text(model).tag(model)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                }
+                .padding(.horizontal)
+                
+                Spacer()
+                
+                HStack {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                    .keyboardShortcut(.cancelAction)
+                    
+                    Button("Save") {
+                        viewModel.setApiKey(tempApiKey.trimmingCharacters(in: .whitespacesAndNewlines))
+                        dismiss()
+                    }
+                    .keyboardShortcut(.defaultAction)
+                }
+                .padding()
+            }
+            .frame(width: 400, height: 300)
+        }
     }
 }
 
