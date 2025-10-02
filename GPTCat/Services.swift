@@ -25,15 +25,27 @@ class OpenRouterService {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         
-        let messageDict = messages.map { ["role": $0.role, "content": $0.content] }
+        let filteredMessages = messages.filter(CheckNotErrorMessage)
+        
+        let messageDict = filteredMessages.map { ["role": $0.role, "content": $0.content] }
         let body = OpenRouterRequest(model: model, messages: messageDict)
         request.httpBody = try JSONEncoder().encode(body)
 
         
         let (data, _) = try await URLSession.shared.data(for: request)
-        let response = try JSONDecoder().decode(OpenRouterResponse.self, from: data)
+        let response = try? JSONDecoder().decode(OpenRouterResponse.self, from: data)
+        if let result = response?.choices.first?.message.content {
+            return result
+        }
         
-        return response.choices.first?.message.content ?? "No response"
+        let error = try? JSONDecoder().decode(OpenRouterError.self, from: data)
+        
+        
+        return  "Error: " + (error?.error.message ?? "No Responce")
+    }
+    
+    func CheckNotErrorMessage(_ message: Message) -> Bool {
+        return message.role != "assistant" || !message.content.hasPrefix("Error: ")
     }
 }
 

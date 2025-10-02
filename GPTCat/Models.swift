@@ -31,3 +31,15 @@ struct OpenRouterResponse: Codable {
     }
 }
 
+
+struct OpenRouterError: Codable {
+    let error: ErrorData
+    
+    struct ErrorData: Codable {
+        let message: String
+        let code: Int
+    }
+
+}
+
+
