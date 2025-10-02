@@ -1,0 +1,68 @@
+//
+//  ViewModesl.swift
+//  GPTCat
+//
+//  Created by Ivan Sergeyenko on 2025-10-01.
+//
+
+import Foundation
+import Combine
+
+
+@MainActor
+class ChatViewModel: ObservableObject {
+    @Published var messages: [Message] = []
+    @Published var inputText = ""
+    @Published var isLoading = false
+    @Published var apiKey = ""
+    @Published var selectedModel = "openai/gpt-5-nano"
+    
+    private var service: OpenRouterService?
+    
+    let availableModels = [
+        "openai/gpt-5-nano",
+        "openai/gpt-5",
+        "google/gemini-2.5-flash",
+        "anthropic/claude-sonnet-4.5",
+    ]
+    
+    func setApiKey(_ key: String) {
+        apiKey = key
+        service = OpenRouterService(apiKey: key)
+        UserDefaults.standard.set(key, forKey: "openrouter_api_key")
+    }
+    
+    func loadApiKey() {
+        if let saved = UserDefaults.standard.string(forKey: "openrouter_api_key") {
+            apiKey = saved
+            service = OpenRouterService(apiKey: saved)
+        }
+    }
+    
+    func sendMessage() {
+        guard !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              service != nil else { return }
+        
+        let userMessage = Message(role: "user", content: inputText)
+        messages.append(userMessage)
+        //let currentInput = inputText
+        inputText = ""
+        isLoading = true
+        
+        Task {
+            do {
+                let response = try await service?.sendMessage(messages: messages, model: selectedModel)
+                let assistantMessage = Message(role: "assistant", content: response ?? "")
+                messages.append(assistantMessage)
+            } catch {
+                let errorMessage = Message(role: "assistant", content: "Error: \(error.localizedDescription)")
+                messages.append(errorMessage)
+            }
+            isLoading = false
+        }
+    }
+    
+    func clearChat() {
+        messages.removeAll()
+    }
+}
