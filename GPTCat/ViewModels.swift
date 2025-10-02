@@ -18,6 +18,7 @@ class ChatViewModel: ObservableObject {
     @Published var selectedModel = "openai/gpt-5-nano"
     
     private var service: OpenRouterService?
+    private var storage: ChatStorage?
     
     let availableModels = [
         "openai/gpt-5-nano",
@@ -25,6 +26,12 @@ class ChatViewModel: ObservableObject {
         "google/gemini-2.5-flash",
         "anthropic/claude-sonnet-4.5",
     ]
+    
+    init() {
+        storage = ChatStorage()
+        loadApiKey()
+        messages = storage?.loadConversation() ?? []
+    }
     
     func setApiKey(_ key: String) {
         apiKey = key
@@ -58,11 +65,13 @@ class ChatViewModel: ObservableObject {
                 let errorMessage = Message(role: "assistant", content: "Error: \(error.localizedDescription)")
                 messages.append(errorMessage)
             }
+            storage?.saveConversation(messages: messages)
             isLoading = false
         }
     }
     
     func clearChat() {
+        storage?.deleteConversation()
         messages.removeAll()
     }
 }
