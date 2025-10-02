@@ -10,7 +10,7 @@ import Combine
 
 
 struct ContentView: View {
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var appController: AppController
     @Environment(\.openSettings) private var openSettings
     @State private var showingSettings = false
     
@@ -20,11 +20,11 @@ struct ContentView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 12) {
-                        ForEach(appState.messages) { message in
+                        ForEach(appController.messages) { message in
                             MessageBubble(message: message).id(message.id)
                         }
 
-                        if appState.isLoading {
+                        if appController.isLoading {
                             HStack {
                                 ProgressView()
                                     .scaleEffect(0.8)
@@ -38,8 +38,8 @@ struct ContentView: View {
                     }
                     .padding()
                 }
-                .onChange(of: appState.messages.count) {
-                    if let lastMessage = appState.messages.last {
+                .onChange(of: appController.messages.count) {
+                    if let lastMessage = appController.messages.last {
                         withAnimation {
                             proxy.scrollTo(lastMessage.id, anchor: .bottom)
                         }
@@ -51,13 +51,13 @@ struct ContentView: View {
 
             // Input area
             HStack(spacing: 12) {
-                TextField("Type your message...", text: $appState.inputText)
+                TextField("Type your message...", text: $appController.inputText)
                     .textFieldStyle(.plain)
                     .padding(10)
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(8)
                     .onSubmit {
-                        appState.sendMessage()
+                        appController.sendMessage()
                     }
                 .overlay(alignment: .trailing) {
                     Button(action: {
@@ -71,13 +71,13 @@ struct ContentView: View {
                         .padding(.trailing, 8)
                 }
 
-                Button(action: { appState.sendMessage() }) {
+                Button(action: { appController.sendMessage() }) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.title2)
-                        .foregroundColor(appState.inputText.isEmpty ? .gray : .blue)
+                        .foregroundColor(appController.inputText.isEmpty ? .gray : .blue)
                 }
                 .buttonStyle(.plain)
-                    .disabled(appState.inputText.isEmpty || appState.isLoading)
+                    .disabled(appController.inputText.isEmpty || appController.isLoading)
             }
             .padding()
         }
@@ -89,14 +89,14 @@ struct ContentView: View {
                     }
                 }
                 ToolbarItem(placement: .navigation) {
-                    Button(action: { appState.clearChat() }) {
+                    Button(action: { appController.clearChat() }) {
                         Image(systemName: "trash")
                     }
                 }
             }
         .frame(minWidth: 600, minHeight: 400)
             .onAppear {
-                appState.loadApiKey()
+                appController.loadApiKey()
             }
     }
     
@@ -132,7 +132,7 @@ struct ContentView: View {
 }
 
 struct SettingsView: View {
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var appController: AppController
     @Environment(\.dismiss) var dismiss
     @State private var tempApiKey = ""
 
@@ -149,7 +149,7 @@ struct SettingsView: View {
                         SecureField("Enter your API key", text: $tempApiKey)
                         .textFieldStyle(.roundedBorder)
                         .onAppear {
-                            tempApiKey = appState.apiKey
+                            tempApiKey = appController.apiKey
                         }
 
                     Text("Get your API key from openrouter.ai")
@@ -162,8 +162,8 @@ struct SettingsView: View {
                     Text("Model")
                         .font(.headline)
 
-                        Picker("Select Model", selection: $appState.selectedModel) {
-                            ForEach(appState.availableModels, id: \.self) { model in
+                        Picker("Select Model", selection: $appController.selectedModel) {
+                            ForEach(appController.availableModels, id: \.self) { model in
                                 Text(model).tag(model)
                             }
                         }
@@ -180,7 +180,7 @@ struct SettingsView: View {
                     .keyboardShortcut(.cancelAction)
 
                         Button("Save") {
-                            appState.setApiKey(tempApiKey.trimmingCharacters(in: .whitespacesAndNewlines))
+                            appController.setApiKey(tempApiKey.trimmingCharacters(in: .whitespacesAndNewlines))
                                 dismiss()
                         }
                     .keyboardShortcut(.defaultAction)
