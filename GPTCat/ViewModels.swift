@@ -17,8 +17,9 @@ class ChatViewModel: ObservableObject {
     @Published var apiKey = ""
     @Published var selectedModel = "openai/gpt-5-nano"
     
-    private var service: OpenRouterService?
+    private var service: OpenRouter?
     private var storage: ChatStorage?
+
     
     let availableModels = [
         "openai/gpt-5-nano",
@@ -35,14 +36,14 @@ class ChatViewModel: ObservableObject {
     
     func setApiKey(_ key: String) {
         apiKey = key
-        service = OpenRouterService(apiKey: key)
+        service = OpenRouter(apiKey: key)
         Keychain.save(key: "openrouter_api_key", value: key)
     }
     
     func loadApiKey() {
         if let saved = Keychain.read(key: "openrouter_api_key") {
             apiKey = saved
-            service = OpenRouterService(apiKey: saved)
+            service = OpenRouter(apiKey: saved)
         }
     }
     
@@ -52,7 +53,6 @@ class ChatViewModel: ObservableObject {
         
         let userMessage = Message(role: "user", content: inputText)
         messages.append(userMessage)
-        //let currentInput = inputText
         inputText = ""
         isLoading = true
         
