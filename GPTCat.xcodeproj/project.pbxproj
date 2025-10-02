@@ -1,0 +1,568 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		2CAB76D42E8DF7A6001095B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CAB76BE2E8DF7A6001095B5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2CAB76C52E8DF7A6001095B5;
+			remoteInfo = GPTCat;
+		};
+		2CAB76DE2E8DF7A6001095B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2CAB76BE2E8DF7A6001095B5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2CAB76C52E8DF7A6001095B5;
+			remoteInfo = GPTCat;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2CAB76C62E8DF7A6001095B5 /* GPTCat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GPTCat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CAB76D32E8DF7A6001095B5 /* GPTCatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPTCatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CAB76DD2E8DF7A6001095B5 /* GPTCatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GPTCatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2CAB76C82E8DF7A6001095B5 /* GPTCat */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GPTCat;
+			sourceTree = "<group>";
+		};
+		2CAB76D62E8DF7A6001095B5 /* GPTCatTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GPTCatTests;
+			sourceTree = "<group>";
+		};
+		2CAB76E02E8DF7A6001095B5 /* GPTCatUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GPTCatUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2CAB76C32E8DF7A6001095B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CAB76D02E8DF7A6001095B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CAB76DA2E8DF7A6001095B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2CAB76BD2E8DF7A6001095B5 = {
+			isa = PBXGroup;
+			children = (
+				2CAB76C82E8DF7A6001095B5 /* GPTCat */,
+				2CAB76D62E8DF7A6001095B5 /* GPTCatTests */,
+				2CAB76E02E8DF7A6001095B5 /* GPTCatUITests */,
+				2CAB76C72E8DF7A6001095B5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2CAB76C72E8DF7A6001095B5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2CAB76C62E8DF7A6001095B5 /* GPTCat.app */,
+				2CAB76D32E8DF7A6001095B5 /* GPTCatTests.xctest */,
+				2CAB76DD2E8DF7A6001095B5 /* GPTCatUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2CAB76C52E8DF7A6001095B5 /* GPTCat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2CAB76E72E8DF7A6001095B5 /* Build configuration list for PBXNativeTarget "GPTCat" */;
+			buildPhases = (
+				2CAB76C22E8DF7A6001095B5 /* Sources */,
+				2CAB76C32E8DF7A6001095B5 /* Frameworks */,
+				2CAB76C42E8DF7A6001095B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2CAB76C82E8DF7A6001095B5 /* GPTCat */,
+			);
+			name = GPTCat;
+			packageProductDependencies = (
+			);
+			productName = GPTCat;
+			productReference = 2CAB76C62E8DF7A6001095B5 /* GPTCat.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2CAB76D22E8DF7A6001095B5 /* GPTCatTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2CAB76EA2E8DF7A6001095B5 /* Build configuration list for PBXNativeTarget "GPTCatTests" */;
+			buildPhases = (
+				2CAB76CF2E8DF7A6001095B5 /* Sources */,
+				2CAB76D02E8DF7A6001095B5 /* Frameworks */,
+				2CAB76D12E8DF7A6001095B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2CAB76D52E8DF7A6001095B5 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2CAB76D62E8DF7A6001095B5 /* GPTCatTests */,
+			);
+			name = GPTCatTests;
+			packageProductDependencies = (
+			);
+			productName = GPTCatTests;
+			productReference = 2CAB76D32E8DF7A6001095B5 /* GPTCatTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2CAB76DC2E8DF7A6001095B5 /* GPTCatUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2CAB76ED2E8DF7A6001095B5 /* Build configuration list for PBXNativeTarget "GPTCatUITests" */;
+			buildPhases = (
+				2CAB76D92E8DF7A6001095B5 /* Sources */,
+				2CAB76DA2E8DF7A6001095B5 /* Frameworks */,
+				2CAB76DB2E8DF7A6001095B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2CAB76DF2E8DF7A6001095B5 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2CAB76E02E8DF7A6001095B5 /* GPTCatUITests */,
+			);
+			name = GPTCatUITests;
+			packageProductDependencies = (
+			);
+			productName = GPTCatUITests;
+			productReference = 2CAB76DD2E8DF7A6001095B5 /* GPTCatUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2CAB76BE2E8DF7A6001095B5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					2CAB76C52E8DF7A6001095B5 = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
+					2CAB76D22E8DF7A6001095B5 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 2CAB76C52E8DF7A6001095B5;
+					};
+					2CAB76DC2E8DF7A6001095B5 = {
+						CreatedOnToolsVersion = 26.0.1;
+						TestTargetID = 2CAB76C52E8DF7A6001095B5;
+					};
+				};
+			};
+			buildConfigurationList = 2CAB76C12E8DF7A6001095B5 /* Build configuration list for PBXProject "GPTCat" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2CAB76BD2E8DF7A6001095B5;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2CAB76C72E8DF7A6001095B5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2CAB76C52E8DF7A6001095B5 /* GPTCat */,
+				2CAB76D22E8DF7A6001095B5 /* GPTCatTests */,
+				2CAB76DC2E8DF7A6001095B5 /* GPTCatUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2CAB76C42E8DF7A6001095B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CAB76D12E8DF7A6001095B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CAB76DB2E8DF7A6001095B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2CAB76C22E8DF7A6001095B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CAB76CF2E8DF7A6001095B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CAB76D92E8DF7A6001095B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2CAB76D52E8DF7A6001095B5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2CAB76C52E8DF7A6001095B5 /* GPTCat */;
+			targetProxy = 2CAB76D42E8DF7A6001095B5 /* PBXContainerItemProxy */;
+		};
+		2CAB76DF2E8DF7A6001095B5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2CAB76C52E8DF7A6001095B5 /* GPTCat */;
+			targetProxy = 2CAB76DE2E8DF7A6001095B5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2CAB76E52E8DF7A6001095B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2CAB76E62E8DF7A6001095B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		2CAB76E82E8DF7A6001095B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ips.GPTCat;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2CAB76E92E8DF7A6001095B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ips.GPTCat;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2CAB76EB2E8DF7A6001095B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ips.GPTCatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GPTCat.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GPTCat";
+			};
+			name = Debug;
+		};
+		2CAB76EC2E8DF7A6001095B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ips.GPTCatTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GPTCat.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GPTCat";
+			};
+			name = Release;
+		};
+		2CAB76EE2E8DF7A6001095B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ips.GPTCatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = GPTCat;
+			};
+			name = Debug;
+		};
+		2CAB76EF2E8DF7A6001095B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ips.GPTCatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = GPTCat;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2CAB76C12E8DF7A6001095B5 /* Build configuration list for PBXProject "GPTCat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CAB76E52E8DF7A6001095B5 /* Debug */,
+				2CAB76E62E8DF7A6001095B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2CAB76E72E8DF7A6001095B5 /* Build configuration list for PBXNativeTarget "GPTCat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CAB76E82E8DF7A6001095B5 /* Debug */,
+				2CAB76E92E8DF7A6001095B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2CAB76EA2E8DF7A6001095B5 /* Build configuration list for PBXNativeTarget "GPTCatTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CAB76EB2E8DF7A6001095B5 /* Debug */,
+				2CAB76EC2E8DF7A6001095B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2CAB76ED2E8DF7A6001095B5 /* Build configuration list for PBXNativeTarget "GPTCatUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CAB76EE2E8DF7A6001095B5 /* Debug */,
+				2CAB76EF2E8DF7A6001095B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2CAB76BE2E8DF7A6001095B5 /* Project object */;
+}
