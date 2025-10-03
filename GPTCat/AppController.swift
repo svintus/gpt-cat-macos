@@ -1,39 +1,38 @@
 //
-//  ViewModesl.swift
+//  AppController.swift
 //  GPTCat
 //
-//  Created by Ivan Sergeyenko on 2025-10-01.
+//  Created by Ivan Sergeyenko on 2025-10-02.
 //
 
-import Foundation
+
+import SwiftUI
 import Combine
 
-
-@MainActor
-class ChatViewModel: ObservableObject {
+class AppController: ObservableObject {
+    @Published var apiKey: String = ""
     @Published var messages: [Message] = []
     @Published var inputText = ""
     @Published var isLoading = false
-    @Published var apiKey = ""
-    @Published var selectedModel = "openai/gpt-5-nano"
-    
-    private var service: OpenRouter?
-    private var storage: ChatStorage?
+    @Published var selectedModel: String = "openai/gpt-5-nano"
 
-    
     let availableModels = [
         "openai/gpt-5-nano",
         "openai/gpt-5",
         "google/gemini-2.5-flash",
         "anthropic/claude-sonnet-4.5",
     ]
-    
+
+    private var service: OpenRouter?
+    private var storage: ChatStorage?
+
     init() {
         storage = ChatStorage()
         loadApiKey()
         messages = storage?.loadConversation() ?? []
+            
     }
-    
+
     func setApiKey(_ key: String) {
         apiKey = key
         service = OpenRouter(apiKey: key)
@@ -46,7 +45,7 @@ class ChatViewModel: ObservableObject {
             service = OpenRouter(apiKey: saved)
         }
     }
-    
+
     func sendMessage() {
         guard !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               service != nil else { return }

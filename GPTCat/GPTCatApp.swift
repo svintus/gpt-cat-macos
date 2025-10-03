@@ -6,12 +6,23 @@
 //
 
 import SwiftUI
+import Combine
+
+
+
 
 @main
 struct GPTCatApp: App {
+    @StateObject private var appController = AppController()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(appController)
+        }
+
+        Settings {
+            SettingsView()
+                .environmentObject(appController)
         }
     }
 }

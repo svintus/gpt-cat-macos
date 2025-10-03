@@ -10,7 +10,8 @@ import Combine
 
 
 struct ContentView: View {
-    @StateObject private var viewModel = ChatViewModel()
+    @EnvironmentObject var appController: AppController
+    @Environment(\.openSettings) private var openSettings
     @State private var showingSettings = false
     
     var body: some View {
@@ -19,11 +20,11 @@ struct ContentView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 12) {
-                        ForEach(viewModel.messages) { message in
+                        ForEach(appController.messages) { message in
                             MessageBubble(message: message).id(message.id)
                         }
 
-                        if viewModel.isLoading {
+                        if appController.isLoading {
                             HStack {
                                 ProgressView()
                                     .scaleEffect(0.8)
@@ -37,8 +38,8 @@ struct ContentView: View {
                     }
                     .padding()
                 }
-                .onChange(of: viewModel.messages.count) {
-                    if let lastMessage = viewModel.messages.last {
+                .onChange(of: appController.messages.count) {
+                    if let lastMessage = appController.messages.last {
                         withAnimation {
                             proxy.scrollTo(lastMessage.id, anchor: .bottom)
                         }
@@ -50,55 +51,55 @@ struct ContentView: View {
 
             // Input area
             HStack(spacing: 12) {
-                TextField("Type your message...", text: $viewModel.inputText)
+                TextField("Type your message...", text: $appController.inputText)
                     .textFieldStyle(.plain)
                     .padding(10)
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(8)
                     .onSubmit {
-                        viewModel.sendMessage()
+                        appController.sendMessage()
                     }
                 .overlay(alignment: .trailing) {
                     Button(action: {
                             // TODO do an action here
                             print("Mic button pressed")
                             }) {
-                        Image(systemName: "microphone")
+                        Image(systemName: "mic")
                             .foregroundColor(.secondary)
                     }
                     .buttonStyle(.plain)
                         .padding(.trailing, 8)
                 }
 
-                Button(action: { viewModel.sendMessage() }) {
+                Button(action: { appController.sendMessage() }) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.title2)
-                        .foregroundColor(viewModel.inputText.isEmpty ? .gray : .blue)
+                        .foregroundColor(appController.inputText.isEmpty ? .gray : .blue)
                 }
                 .buttonStyle(.plain)
-                    .disabled(viewModel.inputText.isEmpty || viewModel.isLoading)
+                    .disabled(appController.inputText.isEmpty || appController.isLoading)
             }
             .padding()
         }
         .navigationTitle("GPT Cat  🐈")
             .toolbar {
                 ToolbarItem(placement: .navigation) {
-                    Button(action: { showingSettings = true }) {
+                    Button(action: { openSettings() }) {
                         Image(systemName: "gear")
                     }
                 }
                 ToolbarItem(placement: .navigation) {
-                    Button(action: { viewModel.clearChat() }) {
+                    Button(action: { appController.clearChat() }) {
                         Image(systemName: "trash")
                     }
                 }
             }
-        .sheet(isPresented: $showingSettings) {
-            SettingsView(viewModel: viewModel)
-        }
         .frame(minWidth: 600, minHeight: 400)
             .onAppear {
-                viewModel.loadApiKey()
+                appController.loadApiKey()
+                if appController.apiKey.isEmpty {
+                    openSettings()
+                }
             }
     }
     
@@ -131,64 +132,65 @@ struct ContentView: View {
         }
     }
     
-    struct SettingsView: View {
-        @ObservedObject var viewModel: ChatViewModel
-        @Environment(\.dismiss) var dismiss
-        @State private var tempApiKey = ""
-        
-        var body: some View {
-            VStack(spacing: 20) {
-                Text("Settings")
-                    .font(.title)
-                    .padding(.top)
-                
+}
+
+struct SettingsView: View {
+    @EnvironmentObject var appController: AppController
+    @Environment(\.dismiss) var dismiss
+    @State private var tempApiKey = ""
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Settings")
+                .font(.title)
+                .padding(.top)
+
                 VStack(alignment: .leading, spacing: 8) {
                     Text("OpenRouter API Key")
                         .font(.headline)
-                    
-                    SecureField("Enter your API key", text: $tempApiKey)
+
+                        SecureField("Enter your API key", text: $tempApiKey)
                         .textFieldStyle(.roundedBorder)
                         .onAppear {
-                            tempApiKey = viewModel.apiKey
+                            tempApiKey = appController.apiKey
                         }
-                    
+
                     Text("Get your API key from openrouter.ai")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                .padding(.horizontal)
-                
+            .padding(.horizontal)
+
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Model")
                         .font(.headline)
-                    
-                    Picker("Select Model", selection: $viewModel.selectedModel) {
-                        ForEach(viewModel.availableModels, id: \.self) { model in
-                            Text(model).tag(model)
+
+                        Picker("Select Model", selection: $appController.selectedModel) {
+                            ForEach(appController.availableModels, id: \.self) { model in
+                                Text(model).tag(model)
+                            }
                         }
-                    }
                     .pickerStyle(.menu)
                 }
-                .padding(.horizontal)
-                
+            .padding(.horizontal)
+
                 Spacer()
-                
+
                 HStack {
                     Button("Cancel") {
                         dismiss()
                     }
                     .keyboardShortcut(.cancelAction)
-                    
-                    Button("Save") {
-                        viewModel.setApiKey(tempApiKey.trimmingCharacters(in: .whitespacesAndNewlines))
-                        dismiss()
-                    }
+
+                        Button("Save") {
+                            appController.setApiKey(tempApiKey.trimmingCharacters(in: .whitespacesAndNewlines))
+                                dismiss()
+                        }
                     .keyboardShortcut(.defaultAction)
                 }
-                .padding()
-            }
-            .frame(width: 400, height: 300)
+            .padding()
         }
+        .frame(width: 400, height: 300)
     }
 }
 
