@@ -60,10 +60,6 @@ final class GPTCatUITests: XCTestCase {
         // Verify send button exists
         let sendButton = app.buttons.matching(identifier: "Submit").firstMatch
         XCTAssertTrue(sendButton.exists)
-        
-        // Verify mic button exists
-        // let micButton = app.buttons.matching(identifier: "mic").firstMatch
-        // XCTAssertTrue(micButton.exists)
     }
     
     @MainActor

@@ -59,17 +59,6 @@ struct ContentView: View {
                     .onSubmit {
                         appController.sendMessage()
                     }
-                .overlay(alignment: .trailing) {
-                    Button(action: {
-                            // TODO do an action here
-                            print("Mic button pressed")
-                            }) {
-                        Image(systemName: "mic")
-                            .foregroundColor(.secondary)
-                    }
-                    .buttonStyle(.plain)
-                        .padding(.trailing, 8)
-                }
 
                 Button(action: { appController.sendMessage() }) {
                     Image(systemName: "arrow.up.circle.fill")

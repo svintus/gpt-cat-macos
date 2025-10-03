@@ -22,7 +22,7 @@ class Keychain {
                 kSecAttrService as String: service,
                 kSecAttrAccount as String: account,
                 kSecValueData as String: data,
-                kSecAttrLabel as String: key
+                kSecAttrLabel as String: makeKeyLabel(key)
             ]
             
             // Delete existing item if any
@@ -40,7 +40,7 @@ class Keychain {
             kSecClass as String: keyClass,
             kSecAttrService as String: service,
             kSecAttrAccount as String: account,
-            kSecAttrLabel as String: key,
+            kSecAttrLabel as String: makeKeyLabel(key),
             kSecReturnData as String: true,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
@@ -60,10 +60,14 @@ class Keychain {
             kSecClass as String: keyClass,
             kSecAttrService as String: service,
             kSecAttrAccount as String: account,
-            kSecAttrLabel as String: key
+            kSecAttrLabel as String: makeKeyLabel(key)
         ]
         
         let status = SecItemDelete(query as CFDictionary)
         return status == errSecSuccess
+    }
+
+    class func makeKeyLabel(_ key: String) -> String {
+        return "\(service).\(key)"
     }
 }
