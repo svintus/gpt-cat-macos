@@ -97,6 +97,9 @@ struct ContentView: View {
         .frame(minWidth: 600, minHeight: 400)
             .onAppear {
                 appController.loadApiKey()
+                if appController.apiKey.isEmpty {
+                    openSettings()
+                }
             }
     }
     
