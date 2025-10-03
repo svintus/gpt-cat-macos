@@ -74,10 +74,11 @@ struct ContentView: View {
                 Button(action: { appController.sendMessage() }) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.title2)
-                        .foregroundColor(appController.inputText.isEmpty ? .gray : .blue)
+                        .foregroundColor(appController.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? .gray : .blue)
                 }
                 .buttonStyle(.plain)
-                    .disabled(appController.inputText.isEmpty || appController.isLoading)
+                    .disabled(appController.inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || appController.isLoading)
+                .accessibilityLabel("Submit")
             }
             .padding()
         }
@@ -87,11 +88,13 @@ struct ContentView: View {
                     Button(action: { openSettings() }) {
                         Image(systemName: "gear")
                     }
+                    .accessibilityLabel("Settings")
                 }
                 ToolbarItem(placement: .navigation) {
                     Button(action: { appController.clearChat() }) {
                         Image(systemName: "trash")
                     }
+                    .accessibilityLabel("Delete")
                 }
             }
         .frame(minWidth: 600, minHeight: 400)
