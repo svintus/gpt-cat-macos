@@ -8,12 +8,37 @@
 import Foundation
 import Security
 
+
 class Keychain {
     
     static private let account = NSUserName() as String
     static private let service = Bundle.main.bundleIdentifier ?? "myservice"
     static private let keyClass = kSecClassGenericPassword
     
+
+// TODO: Once we have a Developer ID we can sign the app with, we will get rid of Keychain
+// authorization prompt and this won't be needed
+#if SKIP_KEYCHAIN
+    #warning("Using UserDefaults instead of Keychain. Remove before shipping!")
+
+    @discardableResult
+    class func save(key: String, value: String) -> Bool {
+        UserDefaults.standard.set(value, forKey: key)
+        return true
+    }
+    
+    class func read(key: String) -> String? {
+        return UserDefaults.standard.string(forKey: key)
+    }
+    
+    @discardableResult
+    class func delete(key:String) -> Bool {
+        UserDefaults.standard.removeObject(forKey: key)
+        return true
+    }
+
+#else
+
     @discardableResult
     class func save(key: String, value: String) -> Bool {
         if let data = value.data(using: .utf8) {
@@ -66,6 +91,8 @@ class Keychain {
         let status = SecItemDelete(query as CFDictionary)
         return status == errSecSuccess
     }
+
+#endif
 
     class func makeKeyLabel(_ key: String) -> String {
         return "\(service).\(key)"
