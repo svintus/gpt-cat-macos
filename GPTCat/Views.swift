@@ -47,9 +47,19 @@ struct ChatSidebarView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Chats")
-                .font(.headline)
+            HStack(spacing: 0) {
+                Text("GPT Cat  🐈")
+                    .font(.headline)
+                    .padding()
+
+                Spacer()
+                Button(action: { appController.createNewChat() }) {
+                    Image(systemName: "plus")
+                }
+                .accessibilityLabel("New Chat")
                 .padding()
+
+            }
             
             Divider()
             
@@ -66,20 +76,13 @@ struct ChatSidebarView: View {
                     }
             }
             .listStyle(.sidebar)
-        }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: { openSettings() }) {
-                    Image(systemName: "gear")
-                }
-                .accessibilityLabel("Settings")
+
+            Button(action: { openSettings() }) {
+                // Image(systemName: "gear")
+                Label("Settings", systemImage: "gear")
             }
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: { appController.createNewChat() }) {
-                    Image(systemName: "plus")
-                }
-                .accessibilityLabel("New Chat")
-            }
+            .accessibilityLabel("Settings")
+            .padding()
         }
     }
 }
