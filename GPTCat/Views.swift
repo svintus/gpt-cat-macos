@@ -15,6 +15,98 @@ struct ContentView: View {
     @State private var showingSettings = false
     
     var body: some View {
+        NavigationSplitView {
+            // Sidebar with chat list
+            ChatSidebarView()
+                .navigationSplitViewColumnWidth(min: 200, ideal: 250, max: 300)
+        } detail: {
+            // Main chat view
+            ChatDetailView()
+        }
+        .frame(minWidth: 800, minHeight: 600)
+        .onAppear {
+            appController.loadApiKey()
+            if appController.apiKey.isEmpty {
+                openSettings()
+            }
+        }
+    }
+}
+
+struct ChatSidebarView: View {
+    @EnvironmentObject var appController: AppController
+    @Environment(\.openSettings) private var openSettings
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Chats")
+                .font(.headline)
+                .padding()
+            
+            Divider()
+            
+            // Chat list
+            List(appController.chats, id: \.id) { chat in
+                ChatRowView(chat: chat)
+                    .onTapGesture {
+                        appController.selectChat(id: chat.id)
+                    }
+                    .contextMenu {
+                        Button("Delete", role: .destructive) {
+                            appController.deleteChat(id: chat.id)
+                        }
+                    }
+            }
+            .listStyle(.sidebar)
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: { openSettings() }) {
+                    Image(systemName: "gear")
+                }
+                .accessibilityLabel("Settings")
+            }
+            ToolbarItem(placement: .destructiveAction) {
+                Button(action: { appController.clearCurrentChat() }) {
+                    Image(systemName: "trash")
+                }
+                .accessibilityLabel("Delete Chat")
+            }
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: { appController.createNewChat() }) {
+                    Image(systemName: "plus")
+                }
+                .accessibilityLabel("New Chat")
+            }
+        }
+    }
+}
+
+struct ChatRowView: View {
+    let chat: Chat
+    @EnvironmentObject var appController: AppController
+    
+    var isSelected: Bool {
+        appController.currentChatId == chat.id
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(chat.summary)
+                .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
+                .lineLimit(2)
+                .foregroundColor(isSelected ? .primary : .secondary)
+        }
+        .padding(.vertical, 2)
+        .background(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)
+        .cornerRadius(6)
+    }
+}
+
+struct ChatDetailView: View {
+    @EnvironmentObject var appController: AppController
+    
+    var body: some View {
         VStack(spacing: 0) {
             // Chat messages
             ScrollViewReader { proxy in
@@ -71,55 +163,34 @@ struct ContentView: View {
             }
             .padding()
         }
-        .navigationTitle("GPT Cat  🐈")
-            .toolbar {
-                ToolbarItem(placement: .navigation) {
-                    Button(action: { openSettings() }) {
-                        Image(systemName: "gear")
-                    }
-                    .accessibilityLabel("Settings")
-                }
-                ToolbarItem(placement: .navigation) {
-                    Button(action: { appController.clearChat() }) {
-                        Image(systemName: "trash")
-                    }
-                    .accessibilityLabel("Delete")
-                }
-            }
-        .frame(minWidth: 600, minHeight: 400)
-            .onAppear {
-                appController.loadApiKey()
-                if appController.apiKey.isEmpty {
-                    openSettings()
-                }
-            }
+        .navigationTitle(appController.currentChat?.summary ?? "GPT Cat  🐈")
     }
+}
+
+struct MessageBubble: View {
+    let message: Message
     
-    struct MessageBubble: View {
-        let message: Message
-        
-        var body: some View {
-            HStack {
-                if message.role == "user" {
-                    Spacer()
-                }
+    var body: some View {
+        HStack {
+            if message.role == "user" {
+                Spacer()
+            }
+            
+            VStack(alignment: message.role == "user" ? .trailing : .leading, spacing: 4) {
+                Text(message.role.capitalized)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 
-                VStack(alignment: message.role == "user" ? .trailing : .leading, spacing: 4) {
-                    Text(message.role.capitalized)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    
-                    Text(message.content)
-                        .padding(12)
-                        .background(message.role == "user" ? Color.blue : Color.gray.opacity(0.2))
-                        .foregroundColor(message.role == "user" ? .white : .primary)
-                        .cornerRadius(12)
-                }
-                .frame(maxWidth: 500, alignment: message.role == "user" ? .trailing : .leading)
-                
-                if message.role == "assistant" {
-                    Spacer()
-                }
+                Text(message.content)
+                    .padding(12)
+                    .background(message.role == "user" ? Color.blue : Color.gray.opacity(0.2))
+                    .foregroundColor(message.role == "user" ? .white : .primary)
+                    .cornerRadius(12)
+            }
+            .frame(maxWidth: 500, alignment: message.role == "user" ? .trailing : .leading)
+            
+            if message.role == "assistant" {
+                Spacer()
             }
         }
     }
