@@ -30,6 +30,14 @@ struct ContentView: View {
                 openSettings()
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .destructiveAction) {
+                Button(action: { appController.clearCurrentChat() }) {
+                    Image(systemName: "trash")
+                }
+                .accessibilityLabel("Delete Chat")
+            }
+        }
     }
 }
 
@@ -65,12 +73,6 @@ struct ChatSidebarView: View {
                     Image(systemName: "gear")
                 }
                 .accessibilityLabel("Settings")
-            }
-            ToolbarItem(placement: .destructiveAction) {
-                Button(action: { appController.clearCurrentChat() }) {
-                    Image(systemName: "trash")
-                }
-                .accessibilityLabel("Delete Chat")
             }
             ToolbarItem(placement: .primaryAction) {
                 Button(action: { appController.createNewChat() }) {
