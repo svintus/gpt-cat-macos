@@ -10,25 +10,24 @@ import Foundation
 struct Chat: Identifiable, Codable {
     let id: UUID
     var messages: [Message]
-    var summary: String
     let createdAt: Date
     
-    init(id: UUID = UUID(), messages: [Message] = [], summary: String = "New Chat", createdAt: Date = Date()) {
+    init(id: UUID = UUID(), messages: [Message] = [], createdAt: Date = Date()) {
         self.id = id
         self.messages = messages
-        self.summary = summary
         self.createdAt = createdAt
     }
+
+    var summary: String {
+        guard let message = messages.filter({$0.role == "user"}).first else {
+            return "New Chat"
+        }
+        return message.content
+    }
+
     
     mutating func addMessage(_ message: Message) {
         messages.append(message)
-        
-        // Generate a simple summary from the first user message if summary is still default
-        if summary == "New Chat" && message.role == "user" {
-            let words = message.content.components(separatedBy: .whitespacesAndNewlines)
-            let firstWords = Array(words.prefix(5)).joined(separator: " ")
-            summary = firstWords.isEmpty ? "New Chat" : firstWords
-        }
     }
 }
 

@@ -67,7 +67,8 @@ struct ChatRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(chat.summary)
-                .lineLimit(2)
+                .lineLimit(1)
+                .truncationMode(.tail)
         }
         .padding(.vertical, 2)
     }
