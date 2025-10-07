@@ -7,6 +7,29 @@
 
 import Foundation
 
+struct Chat: Identifiable, Codable {
+    let id: UUID
+    var messages: [Message]
+    let createdAt: Date
+    
+    init(id: UUID = UUID(), messages: [Message] = [], createdAt: Date = Date()) {
+        self.id = id
+        self.messages = messages
+        self.createdAt = createdAt
+    }
+
+    var summary: String {
+        guard let message = messages.filter({$0.role == "user"}).first else {
+            return "New Chat"
+        }
+        return message.content
+    }
+
+    
+    mutating func addMessage(_ message: Message) {
+        messages.append(message)
+    }
+}
 
 struct Message: Identifiable, Codable {
     let id: UUID
