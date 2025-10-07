@@ -15,21 +15,25 @@ class AppController: ObservableObject {
     @Published var inputText = ""
     @Published var isLoading = false
     @Published var selectedModel: String = "openai/gpt-5-nano"
+    @Published var availableModels : [String] = ["openai/gpt-5-nano"]
 
-    let availableModels = [
+    let defaultModels = [
         "openai/gpt-5-nano",
         "openai/gpt-5",
         "google/gemini-2.5-flash",
         "anthropic/claude-sonnet-4.5",
     ]
-
+    
     private var service: OpenRouter?
     private var storage: ChatStorage?
+    private var models: OpenRouterModels = OpenRouterModels()
 
     init() {
+        loadModels()
         storage = ChatStorage()
         loadApiKey()
         messages = storage?.loadConversation() ?? []
+        
             
     }
 
@@ -44,6 +48,23 @@ class AppController: ObservableObject {
             apiKey = saved
             service = OpenRouter(apiKey: saved)
         }
+    }
+    
+    func loadModels (){
+        Task {
+            do {
+                let loadedModels = try await models.getModelList()
+                if loadedModels.count < 1 {
+                    availableModels = defaultModels
+                }else{
+                    availableModels = loadedModels
+                }
+            } catch {
+                availableModels = defaultModels
+            }
+        }
+        
+        
     }
 
     func sendMessage() {
