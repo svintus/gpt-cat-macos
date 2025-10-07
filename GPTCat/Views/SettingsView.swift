@@ -98,6 +98,7 @@ struct SettingsView: View {
 
                 HStack {
                     Button("Cancel") {
+                        appController.resetSettings()
                         dismiss()
                     }
                     .keyboardShortcut(.cancelAction)
