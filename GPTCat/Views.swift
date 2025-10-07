@@ -131,7 +131,7 @@ struct SettingsView: View {
     @Environment(\.dismiss) var dismiss
     @State private var tempApiKey = ""
     @State private var freeOnly = false
-
+    
     var body: some View {
         VStack(spacing: 20) {
             Text("Settings")
@@ -157,11 +157,11 @@ struct SettingsView: View {
                     Text("Filter models")
                         .font(.headline)
                     
-                    HStack(alignment: .center, spacing: 8) {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Provider")
-                                .font(.headline)
-                            
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Provider")
+                            .font(.headline)
+                   
+                        HStack(alignment: .center, spacing: 15){
                             Picker("Select Provider", selection: $appController.selectedProvider) {
                                 ForEach(appController.providers, id: \.self) { provider in
                                     Text(provider).tag(provider)
@@ -171,22 +171,20 @@ struct SettingsView: View {
                                 appController.loadModels(freeOnly: freeOnly, provider: appController.selectedProvider)
                             }
                             .pickerStyle(.menu)
-                        }
-                        
-                        .padding(.vertical)
-                        
-                        VStack(alignment: .center, spacing: 8) {
+                            
                             Toggle("Free only", isOn: $freeOnly)
                                 .toggleStyle(.checkbox)
                                 .onChange(of: freeOnly) {
                                     appController.loadModels(freeOnly: freeOnly, provider: appController.selectedProvider)
                                 }
-                                .padding()
+                                
                         }
-                        
-                        
                     }
-                }
+                    
+                    .padding(.vertical)
+                
+            }
+                
             
             .padding(.horizontal)
             
@@ -199,10 +197,20 @@ struct SettingsView: View {
                         Text(model).tag(model)
                     }
                 }
+                .onChange(of: appController.selectedModel) {
+                    appController.getModelDescription()
+                }
                 .pickerStyle(.menu)
             }
             
             .padding(.horizontal)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(appController.selectedModelDescription)
+                    .font(.headline)
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 15)
+            }
 
                 Spacer()
 
@@ -212,15 +220,17 @@ struct SettingsView: View {
                     }
                     .keyboardShortcut(.cancelAction)
 
-                        Button("Save") {
-                            appController.setApiKey(tempApiKey.trimmingCharacters(in: .whitespacesAndNewlines))
-                                dismiss()
-                        }
+                    Button("Save") {
+                        appController.setApiKey(tempApiKey.trimmingCharacters(in: .whitespacesAndNewlines))
+                        appController.saveSelectedModel()
+                        dismiss()
+                    }
                     .keyboardShortcut(.defaultAction)
+                    .disabled(appController.selectedModelDescription.isEmpty)
                 }
             .padding()
         }
-        .frame(width: 500, height: 400)
+        .frame(width: 500, height: 600)
     }
 }
 

@@ -15,7 +15,8 @@ class AppController: ObservableObject {
     @Published var inputText = ""
     @Published var isLoading = false
     @Published var freeOnly = false
-    @Published var selectedProvider: String = "Select Provider"
+    @Published var selectedModelDescription = ""
+    @Published var selectedProvider: String = ""
     @Published var selectedModel: String = "openai/gpt-5-nano"
     @Published var availableModels : [String] = ["openai/gpt-5-nano"]
     @Published var providers : [String] = []
@@ -31,9 +32,10 @@ class AppController: ObservableObject {
     private var storage: ChatStorage?
     private let models = OpenRouterModels()
     
-    private var emptyProvider = "Select Provider"
+    private var emptyProvider = "All Providers"
 
     init() {
+        selectedProvider = emptyProvider
         storage = ChatStorage()
         loadApiKey()
         messages = storage?.loadConversation() ?? []
@@ -42,12 +44,24 @@ class AppController: ObservableObject {
                 try await self.models.downloadModels()
                 loadModels()
                 providers = [emptyProvider] + models.getProviderList()
+                loadSelectedModel()
             } catch {
                 availableModels = defaultModels
             }
         }
     }
 
+    func saveSelectedModel(){
+        UserDefaults.standard.set(selectedModel, forKey: "openrouter_api_model")
+    }
+    
+    func loadSelectedModel(){
+        if let saved = UserDefaults.standard.string(forKey: "openrouter_api_model") {
+            selectedModel = saved
+            selectedModelDescription = models.getModelDescription(saved)
+        }
+    }
+    
     func setApiKey(_ key: String) {
         apiKey = key
         service = OpenRouter(apiKey: key)
@@ -67,8 +81,17 @@ class AppController: ObservableObject {
             prov = ""
         }
         availableModels = models.getModelList(freeOnly: freeOnly, provider: prov)
+        if !availableModels.contains(selectedModel){
+            selectedModelDescription = ""
+        }else{
+            selectedModelDescription = models.getModelDescription(selectedModel)
+        }
     }
 
+    func getModelDescription() {
+        selectedModelDescription =  models.getModelDescription(selectedModel)
+    }
+    
     func sendMessage() {
         guard !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               service != nil else { return }
