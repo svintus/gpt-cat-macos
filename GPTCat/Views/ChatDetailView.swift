@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ChatDetailView: View {
     @EnvironmentObject var appController: AppController
+    @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
         VStack(spacing: 0) {
@@ -52,6 +53,7 @@ struct ChatDetailView: View {
                     .padding(10)
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(8)
+                    .focused($isTextFieldFocused)
                     .onSubmit {
                         appController.sendMessage()
                     }
@@ -68,5 +70,14 @@ struct ChatDetailView: View {
             .padding()
         }
         .navigationTitle(appController.currentChat?.summary ?? "GPT Cat  🐈")
+        .onAppear {
+            isTextFieldFocused = true
+        }
+        .onChange(of: appController.currentChatId) {
+            // Have to wait a split second otherwise List selection in sidebar will get out of whack
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isTextFieldFocused = true
+            }
+        }
     }
 }

@@ -25,7 +25,7 @@ class ChatStorage {
     
     /// Save Codable object as JSON
     private func save<T: Codable>(_ object: T, to filename: String) throws {
-        let fileURL = directoryURL.appendingPathComponent(filename).appendingPathExtension("json")
+        let fileURL = directoryURL.appendingPathComponent(filename)
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let data = try encoder.encode(object)
