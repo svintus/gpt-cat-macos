@@ -130,6 +130,7 @@ struct SettingsView: View {
     @EnvironmentObject var appController: AppController
     @Environment(\.dismiss) var dismiss
     @State private var tempApiKey = ""
+    @State private var freeOnly = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -152,18 +153,55 @@ struct SettingsView: View {
                         .foregroundColor(.secondary)
                 }
             .padding(.horizontal)
-
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Model")
+                    Text("Filter models")
                         .font(.headline)
-
-                        Picker("Select Model", selection: $appController.selectedModel) {
-                            ForEach(appController.availableModels, id: \.self) { model in
-                                Text(model).tag(model)
+                    
+                    HStack(alignment: .center, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Provider")
+                                .font(.headline)
+                            
+                            Picker("Select Provider", selection: $appController.selectedProvider) {
+                                ForEach(appController.providers, id: \.self) { provider in
+                                    Text(provider).tag(provider)
+                                }
                             }
+                            .onChange(of: appController.selectedProvider) {
+                                appController.loadModels(freeOnly: freeOnly, provider: appController.selectedProvider)
+                            }
+                            .pickerStyle(.menu)
                         }
-                    .pickerStyle(.menu)
+                        
+                        .padding(.vertical)
+                        
+                        VStack(alignment: .center, spacing: 8) {
+                            Toggle("Free only", isOn: $freeOnly)
+                                .toggleStyle(.checkbox)
+                                .onChange(of: freeOnly) {
+                                    appController.loadModels(freeOnly: freeOnly, provider: appController.selectedProvider)
+                                }
+                                .padding()
+                        }
+                        
+                        
+                    }
                 }
+            
+            .padding(.horizontal)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Model")
+                    .font(.headline)
+                
+                Picker("Select Model", selection: $appController.selectedModel) {
+                    ForEach(appController.availableModels, id: \.self) { model in
+                        Text(model).tag(model)
+                    }
+                }
+                .pickerStyle(.menu)
+            }
+            
             .padding(.horizontal)
 
                 Spacer()
@@ -182,7 +220,7 @@ struct SettingsView: View {
                 }
             .padding()
         }
-        .frame(width: 400, height: 300)
+        .frame(width: 500, height: 400)
     }
 }
 

@@ -14,6 +14,8 @@ class AppController: ObservableObject {
     @Published var messages: [Message] = []
     @Published var inputText = ""
     @Published var isLoading = false
+    @Published var freeOnly = false
+    @Published var selectedProvider: String = "Select Provider"
     @Published var selectedModel: String = "openai/gpt-5-nano"
     @Published var availableModels : [String] = ["openai/gpt-5-nano"]
     @Published var providers : [String] = []
@@ -28,6 +30,8 @@ class AppController: ObservableObject {
     private var service: OpenRouter?
     private var storage: ChatStorage?
     private let models = OpenRouterModels()
+    
+    private var emptyProvider = "Select Provider"
 
     init() {
         storage = ChatStorage()
@@ -37,7 +41,7 @@ class AppController: ObservableObject {
             do {
                 try await self.models.downloadModels()
                 loadModels()
-                providers = models.getProviderList()
+                providers = [emptyProvider] + models.getProviderList()
             } catch {
                 availableModels = defaultModels
             }
@@ -58,11 +62,11 @@ class AppController: ObservableObject {
     }
     
     func loadModels (freeOnly: Bool = false, provider: String = "" ){
-        availableModels = models.getModelList(freeOnly: freeOnly, provider: provider)
-        //not sure this is good idea
-        if availableModels.isEmpty {
-            availableModels = defaultModels
+        var prov = provider
+        if prov == emptyProvider {
+            prov = ""
         }
+        availableModels = models.getModelList(freeOnly: freeOnly, provider: prov)
     }
 
     func sendMessage() {

@@ -38,7 +38,7 @@ class OpenRouterModels {
     }
     
     func getProviderList() -> [String]{
-        return Array(Set( models.map { String($0.id.split(separator: "/").first ?? "") }.sorted()))
+        return Array(Set( models.map { String($0.id.split(separator: "/").first ?? "") })).sorted()
     }
     
     func getModelList(freeOnly: Bool = false, provider: String = "") -> [String]{
@@ -64,7 +64,7 @@ class OpenRouterModels {
     
     private func getByProvider(_ data: [ModelData], provider provider: String) -> [ModelData]{
         let filter = provider + "/"
-        return models.filter({$0.id.hasPrefix(filter)})
+        return data.filter({$0.id.hasPrefix(filter)})
     }
     
     
