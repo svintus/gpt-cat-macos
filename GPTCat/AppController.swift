@@ -16,6 +16,7 @@ class AppController: ObservableObject {
     @Published var isLoading = false
     @Published var selectedModel: String = "openai/gpt-5-nano"
     @Published var availableModels : [String] = ["openai/gpt-5-nano"]
+    @Published var providers : [String] = []
 
     let defaultModels = [
         "openai/gpt-5-nano",
@@ -26,15 +27,21 @@ class AppController: ObservableObject {
     
     private var service: OpenRouter?
     private var storage: ChatStorage?
-    private var models: OpenRouterModels = OpenRouterModels()
+    private let models = OpenRouterModels()
 
     init() {
-        loadModels()
         storage = ChatStorage()
         loadApiKey()
         messages = storage?.loadConversation() ?? []
-        
-            
+        Task { @MainActor in
+            do {
+                try await self.models.downloadModels()
+                loadModels()
+                providers = models.getProviderList()
+            } catch {
+                availableModels = defaultModels
+            }
+        }
     }
 
     func setApiKey(_ key: String) {
@@ -50,21 +57,12 @@ class AppController: ObservableObject {
         }
     }
     
-    func loadModels (){
-        Task {
-            do {
-                let loadedModels = try await models.getModelList()
-                if loadedModels.count < 1 {
-                    availableModels = defaultModels
-                }else{
-                    availableModels = loadedModels
-                }
-            } catch {
-                availableModels = defaultModels
-            }
+    func loadModels (freeOnly: Bool = false, provider: String = "" ){
+        availableModels = models.getModelList(freeOnly: freeOnly, provider: provider)
+        //not sure this is good idea
+        if availableModels.isEmpty {
+            availableModels = defaultModels
         }
-        
-        
     }
 
     func sendMessage() {
@@ -76,7 +74,7 @@ class AppController: ObservableObject {
         inputText = ""
         isLoading = true
         
-        Task {
+        Task { @MainActor in
             do {
                 let response = try await service?.sendMessage(messages: messages, model: selectedModel)
                 let assistantMessage = Message(role: "assistant", content: response ?? "")

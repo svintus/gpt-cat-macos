@@ -16,8 +16,9 @@ import Foundation
 
 class OpenRouterModels {
     private let baseURL = "https://openrouter.ai/api/v1/models"
+    private var models: [ModelData] = []
     
-    func getModelList() async throws -> [String] {
+    func downloadModels() async throws  {
         guard let url = URL(string: baseURL) else {
             throw URLError(.badURL)
         }
@@ -29,19 +30,45 @@ class OpenRouterModels {
         
         let response = try? JSONDecoder().decode(ModelListResponse.self, from: data)
         if let result = response?.data {
-            var list: [String] = []
-            for model in result {
-                list.append(model.id)
-            }
-            return list
+            models = result
+        }else {
+            models = []
         }
         
-        let error = try? JSONDecoder().decode(OpenRouterError.self, from: data)
-        
-        
-        return  ["Error: " + (error?.error.message ?? "No Responce")]
-        
     }
+    
+    func getProviderList() -> [String]{
+        return Array(Set( models.map { String($0.id.split(separator: "/").first ?? "") }.sorted()))
+    }
+    
+    func getModelList(freeOnly: Bool = false, provider: String = "") -> [String]{
+        if models.isEmpty {
+            return []
+        }
+        
+        var filtered = models
+        if freeOnly{
+            filtered = getFreeOnly(filtered)
+        }
+        
+        if !provider.isEmpty {
+            filtered = getByProvider(filtered,provider: provider)
+        }
+        
+        return filtered.map { $0.id }
+    }
+    
+    private func getFreeOnly(_ data: [ModelData]) -> [ModelData]{
+        return data.filter({$0.id.hasSuffix(":free")})
+    }
+    
+    private func getByProvider(_ data: [ModelData], provider provider: String) -> [ModelData]{
+        let filter = provider + "/"
+        return models.filter({$0.id.hasPrefix(filter)})
+    }
+    
+    
+    
     
     
 }
