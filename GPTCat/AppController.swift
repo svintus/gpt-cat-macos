@@ -51,7 +51,7 @@ class AppController: ObservableObject {
             do {
                 try await self.models.downloadModels()
                 loadModels()
-                providers = [emptyProvider] + models.getProviderList()
+                getProviders()
                 loadSelectedModel()
             } catch {
                 availableModels = defaultModels
@@ -75,7 +75,7 @@ class AppController: ObservableObject {
     func loadSelectedModel(){
         if let saved = UserDefaults.standard.string(forKey: "openrouter_api_model") {
             selectedModel = saved
-            selectedModelDescription = models.getModelDescription(saved)
+            getModelDescription()
         }
     }
     
@@ -92,17 +92,22 @@ class AppController: ObservableObject {
         }
     }
     
+    func getProviders(_ freeOnly: Bool = false){
+        providers = [emptyProvider] + models.getProviderList(freeOnly)
+    }
+    
     func loadModels (freeOnly: Bool = false, provider: String = "" ){
         var prov = provider
         if prov == emptyProvider {
             prov = ""
         }
+        
+        getProviders(freeOnly)
         availableModels = models.getModelList(freeOnly: freeOnly, provider: prov)
         if !availableModels.contains(selectedModel){
-            selectedModelDescription = ""
-        }else{
-            selectedModelDescription = models.getModelDescription(selectedModel)
+            selectedModel = availableModels.first ?? ""
         }
+        getModelDescription()
     }
 
 
@@ -110,7 +115,11 @@ class AppController: ObservableObject {
         selectedModelDescription =  models.getModelDescription(selectedModel)
     }
     
-   
+    func resetSettings(){
+        loadSelectedModel()
+        selectedProvider = emptyProvider
+    }
+    
     func loadChats() {
         chats = storage?.loadAllChats() ?? []
     }

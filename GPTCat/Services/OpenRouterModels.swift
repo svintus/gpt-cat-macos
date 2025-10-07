@@ -37,8 +37,12 @@ class OpenRouterModels {
         
     }
     
-    func getProviderList() -> [String]{
-        return Array(Set( models.map { String($0.id.split(separator: "/").first ?? "") })).sorted()
+    func getProviderList(_ freeOnly: Bool = false) -> [String]{
+        var data = models
+        if freeOnly {
+            data = getFreeOnly(data)
+        }
+        return Array(Set( data.map { String($0.id.split(separator: "/").first ?? "") })).sorted()
     }
     
     func getModelList(freeOnly: Bool = false, provider: String = "") -> [String]{
