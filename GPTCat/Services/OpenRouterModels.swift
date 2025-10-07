@@ -62,7 +62,7 @@ class OpenRouterModels {
         return data.filter({$0.id.hasSuffix(":free")})
     }
     
-    private func getByProvider(_ data: [ModelData], provider provider: String) -> [ModelData]{
+    private func getByProvider(_ data: [ModelData], provider: String) -> [ModelData]{
         let filter = provider + "/"
         return models.filter({$0.id.hasPrefix(filter)})
     }
