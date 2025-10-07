@@ -56,48 +56,32 @@ class ChatStorage {
         }
     }
     
-    func saveConversation(messages: [Message]){
-        
-        let filename = messages.first?.id.uuidString  ?? "No_ID"
-        
-        try? save(messages, to: filename)
-        
+    func saveChat(_ chat: Chat) {
+        let filename = chat.id.uuidString + ".json"
+        try? save(chat, to: filename)
     }
     
-    func loadConversations() -> [[Message]]{
+    func loadChat(id: UUID) -> Chat? {
+        let filename = id.uuidString + ".json"
+        return try? load(Chat.self, from: filename)
+    }
+    
+    func loadAllChats() -> [Chat] {
         let files = listFiles()
-        var data:[[Message]] = []
+        var chats: [Chat] = []
+        
         for file in files {
-            let conversation = loadConversation(filename: file)
-            if conversation.count > 0  {
-                data.append(conversation)
+            if let chat = try? load(Chat.self, from: file) {
+                chats.append(chat)
             }
         }
-        return data
+        
+        // Sort by updatedAt in reverse chronological order (most recent first)
+        return chats.sorted { $0.createdAt > $1.createdAt }
     }
     
-    func loadConversation(filename: String) -> [Message] {
-        let data = try? load([Message].self, from: filename)
-        return data ?? []
+    func deleteChat(id: UUID) {
+        let filename = id.uuidString + ".json"
+        try? delete(filename: filename)
     }
-    
-    func loadConversation() -> [Message]{
-        let files = listFiles()
-        if let filename = files.first {
-            return loadConversation(filename: filename)
-        }
-        return []
-    }
-    
-    func deleteConversation(filename: String = ""){
-        if filename != "" {
-            try? delete(filename: filename)
-        }else{
-            let files = listFiles()
-            if let filename = files.first {
-                try? delete(filename: filename)
-            }
-        }
-    }
-    
 }
