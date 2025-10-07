@@ -44,6 +44,9 @@ struct ContentView: View {
 struct ChatSidebarView: View {
     @EnvironmentObject var appController: AppController
     @Environment(\.openSettings) private var openSettings
+
+    @State private var selectedChat: UUID?
+
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -53,7 +56,10 @@ struct ChatSidebarView: View {
                     .padding()
 
                 Spacer()
-                Button(action: { appController.createNewChat() }) {
+                Button(action: {
+                    appController.createNewChat()
+                    selectedChat = appController.currentChat!.id
+                }) {
                     Image(systemName: "plus")
                 }
                 .accessibilityLabel("New Chat")
@@ -64,18 +70,15 @@ struct ChatSidebarView: View {
             Divider()
             
             // Chat list
-            List(appController.chats, id: \.id) { chat in
+            List(appController.chats, selection: $selectedChat) { chat in
                 ChatRowView(chat: chat)
-                    .onTapGesture {
-                        appController.selectChat(id: chat.id)
-                    }
-                    .contextMenu {
-                        Button("Delete", role: .destructive) {
-                            appController.deleteChat(id: chat.id)
-                        }
-                    }
             }
             .listStyle(.sidebar)
+            .onChange(of: selectedChat) {
+                if let selectedChat = selectedChat {
+                    appController.selectChat(id: selectedChat)
+                }
+            }
 
             Button(action: { openSettings() }) {
                 // Image(systemName: "gear")
@@ -84,27 +87,21 @@ struct ChatSidebarView: View {
             .accessibilityLabel("Settings")
             .padding()
         }
+        .onAppear {
+            selectedChat = appController.currentChat?.id
+        }
     }
 }
 
 struct ChatRowView: View {
     let chat: Chat
-    @EnvironmentObject var appController: AppController
-    
-    var isSelected: Bool {
-        appController.currentChatId == chat.id
-    }
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(chat.summary)
-                .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
                 .lineLimit(2)
-                .foregroundColor(isSelected ? .primary : .secondary)
         }
         .padding(.vertical, 2)
-        .background(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)
-        .cornerRadius(6)
     }
 }
 
@@ -227,7 +224,7 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-            .padding(.horizontal)
+                .padding(.horizontal)
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Model")
@@ -240,7 +237,7 @@ struct SettingsView: View {
                         }
                     .pickerStyle(.menu)
                 }
-            .padding(.horizontal)
+                .padding(.horizontal)
 
                 Spacer()
 
